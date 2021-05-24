@@ -1,0 +1,11 @@
+{
+  "name": "quadratictrust",
+  "version": "1.0.0",
+  "description": "Quadratic voting where you stake with your clout - not your $$$",
+  "repository": "https://github.com/gitcoinco/quadratictrust.git",
+  "author": "Yuet Loo Wong <contact@yuetloo.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}

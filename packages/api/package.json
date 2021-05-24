@@ -1,0 +1,39 @@
+{
+  "name": "quadratic",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "migrate": "sequelize-cli db:migrate",
+    "migrate:undo": "sequelize-cli db:migrate:undo",
+    "seed": "sequelize-cli db:seed",
+    "seed:undo": "sequelize-cli db:seed:undo",
+    "start": "pm2 start ./bin/www",
+    "restart": "pm2 restart ./bin/www",
+    "stop": "pm2 stop ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@ethersproject/random": "^5.1.0",
+    "@ethersproject/sha2": "^5.1.0",
+    "aes-js": "^3.1.2",
+    "connect-session-sequelize": "^7.1.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "express-session": "^1.17.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.7",
+    "pg": "^8.5.1",
+    "pm2": "^4.5.6",
+    "randomstring": "^1.1.5",
+    "sequelize": "^6.6.2",
+    "twitter-lite": "^1.1.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "sequelize-cli": "^6.2.0"
+  }
+}

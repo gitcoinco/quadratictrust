@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Quadratic</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Quadratic API</h1>
+
+<a
+  id="login-button"
+  href="/api/login"
+>
+  <img src="https://cdn.cms-twdigitalassets.com/content/dam/developer-twitter/auth-docs/sign-in-with-twitter-gray.png.twimg.1920.png"/>
+</a>
+<ul>
+  <li><a href="/api/users">/users</a></li>
+  <li><a href="/api/search/yuet">/search/:username</a></li>
+  <li><a href="/api/ballots/?voter=ricmoo">/ballots?voter=:username</a> (i.e. /ballots?voter=ricmoo)</li>
+</ul>
+
+<form action="/api/tweet" method="post">
+  <label for="message">Tweet message:</label>
+  <input type="text" id="message" name="message">
+  <input type="submit">
+</form>
+
+<form action="/api/optout" method="post">
+  <label>Opt out?</label>
+  <input type="submit">
+</form>
+
+<form action="/api/vote" method="post">
+  <label>Vote</label>
+  <input type="text" id="candidate" name="candidate" value="ricmoo" placeholder="candidate">
+  <input type="number" id="score" name="score" value="1" placeholder="score">
+  <input type="submit">
+</form>
+  </body>
+</html>
