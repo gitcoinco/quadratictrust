@@ -10,20 +10,33 @@ const Ballot = require('./ballot')
 
 
 const userQuery = ({limit = 10, offset = 0, userSearch, username}) => {
-  const AndLikeUsername = userSearch? "AND u.username ILIKE '%" + userSearch + "%'" : ''
-  const AndEqualUsername = username? "AND u.username = :username" : ''
+  const LikeUsername = userSearch ? `username ILIKE '%${userSearch}%'` : ''
+  const EqualUsername = username
+    ? `${LikeUsername ? 'AND ' : ''}username = :username`
+    : ''
+
+  const WhereClause = `${
+    userSearch ? 'WHERE' : ''
+  } ${LikeUsername} ${EqualUsername}`
+
   return `
-    SELECT u.username,
-          u.score,
-          (SELECT COUNT(1) + 1 FROM "Users" uu
-            WHERE uu.score > u.score and uu.optout = false) as rank,
+    WITH cte AS(
+      SELECT
+        username,
+        score,
+        DENSE_RANK () OVER (
+          ORDER BY score DESC
+        ) rank
+      FROM "Users"
+      WHERE optout = false
+    )
+    SELECT cte.*,
           (SELECT SUM(b.score * b.score) FROM "Ballots" b
-            WHERE b.voter = u.username) as "creditsUsed"
-      FROM "Users" u
-    WHERE u.optout = false ${AndLikeUsername} ${AndEqualUsername}
+              WHERE b.voter = cte.username) as "creditsUsed"
+    FROM cte
+    ${WhereClause}
     ORDER BY score DESC
-    LIMIT ${limit}
-    OFFSET ${offset}
+    LIMIT ${limit} OFFSET ${offset}
 `
 }
 

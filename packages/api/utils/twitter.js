@@ -114,7 +114,7 @@ class Twitter {
         'user.fields': USER_PROFILE_FIELDS,
       })
 
-      return buildUserProfile(users, response.data)
+      return buildUserProfile(users, response.data || [])
     } catch (e) {
       handleError(e)
     }
