@@ -9,16 +9,7 @@ const { User } = db.models
 const Ballot = require('./ballot')
 
 
-const userQuery = ({limit = 10, offset = 0, userSearch, username}) => {
-  const LikeUsername = userSearch ? `username ILIKE '%${userSearch}%'` : ''
-  const EqualUsername = username
-    ? `${LikeUsername ? 'AND ' : ''}username = :username`
-    : ''
-
-  const WhereClause = `${
-    userSearch ? 'WHERE' : ''
-  } ${LikeUsername} ${EqualUsername}`
-
+const userQuery = ({ limit = 10, offset = 0, where = '' }) => {
   return `
     WITH cte AS(
       SELECT
@@ -34,7 +25,7 @@ const userQuery = ({limit = 10, offset = 0, userSearch, username}) => {
           (SELECT SUM(b.score * b.score) FROM "Ballots" b
               WHERE b.voter = cte.username) as "creditsUsed"
     FROM cte
-    ${WhereClause}
+    ${where}
     ORDER BY score DESC
     LIMIT ${limit} OFFSET ${offset}
 `
@@ -70,10 +61,10 @@ module.exports = {
     return Boolean(result)
   },
   getUser: async (username = '') => {
-    const users = await db.query(userQuery({username}),
-    {
+    const where = 'WHERE username = :username'
+    const users = await db.query(userQuery({ where }), {
       replacements: { username },
-      type: QueryTypes.SELECT
+      type: QueryTypes.SELECT,
     })
 
     if( users.length === 0 ) {
@@ -104,9 +95,10 @@ module.exports = {
     return data
   },
   searchUsers: async (userSearch, limit = 10) => {
-    const users = await db.query(userQuery({limit, userSearch}),
-    {
-      type: QueryTypes.SELECT
+    const where = `WHERE username ILIKE :username`
+    const users = await db.query(userQuery({ limit, where }), {
+      type: QueryTypes.SELECT,
+      replacements: { username: `%${userSearch}%` },
     })
 
     const twitter = new Twitter()

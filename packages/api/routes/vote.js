@@ -5,7 +5,7 @@ const router = express.Router()
 const User = require('../queries/user')
 const Twitter = require('../utils/twitter')
 
-async function validate(req, res, next) {
+async function validate(req) {
   const { candidate, score } = req.body
   if (!candidate) {
     throw new createError(400, 'Missing candidate')
@@ -15,22 +15,26 @@ async function validate(req, res, next) {
   }
 
   const twitter = new Twitter()
-  const profile = await twitter.getUserProfile({ username: candidate })
-  if (!profile) {
-    throw new createError(400, 'Candidate is invalid twitter user')
+  try {
+    const profile = await twitter.getUserProfile({ username: candidate })
+    if (!profile) {
+      throw new createError(400, 'Candidate is invalid twitter user')
+    }
+  } catch (e) {
+    throw new createError(400, e.message)
   }
-  next()
 }
 
 /*
  * POST /api/vote
  *
  */
-router.post('/', requireLogin, validate, async (req, res, next) => {
+router.post('/', requireLogin, async (req, res, next) => {
   const { username: voter } = req.auth
   const { candidate, score } = req.body
 
   try {
+    await validate(req)
     const requiredCredits = score * score
     const user = await User.getUser(voter)
     const availableCredits = user.credits || 0

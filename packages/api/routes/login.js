@@ -42,7 +42,7 @@ router.get('/callback', async (req, res, next) => {
     })
 
     const isOptout = await User.isOptout(username)
-    if( isOptout ){
+    if (isOptout) {
       throw new Error('Not authorized')
     }
 

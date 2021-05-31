@@ -13,7 +13,7 @@ router.post('/', requireLogin, async (req, res, next) => {
       throw new Error('Invalid username')
     }
 
-    const result = await User.setOptout({ username })
+    const result = await User.setOptout(username)
     const data = { success: true }
     res.json({ data });
   } catch (e) {
