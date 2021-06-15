@@ -44,6 +44,7 @@
                 md:text-2xl
                 lg:text-4xl
                 flex
+                lining-nums
               "
             >
               {{ user.votes }}

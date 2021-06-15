@@ -72,6 +72,7 @@
                   md:text-2xl
                   lg:text-4xl
                   flex-none
+                  lining-nums
                 "
               >
                 {{ user.voteCredits }}
@@ -139,6 +140,7 @@
                   flex-none
                   mr-2
                   md:mr-4
+                  lining-nums
                 "
               >
                 {{ user.votes }}
