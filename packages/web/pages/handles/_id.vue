@@ -78,6 +78,7 @@
                   md:text-2xl
                   lg:text-4xl
                   flex-none
+                  lining-nums
                 "
               >
                 {{ currentHandle.voteCredits }}
@@ -103,6 +104,7 @@
                   flex-none
                   mr-2
                   md:mr-4
+                  lining-nums
                 "
               >
                 {{ currentHandle.votes }}
@@ -254,6 +256,7 @@
                   self-center
                   flex-grow
                   items-center
+                  lining-nums
                 "
               >
                 0123456789

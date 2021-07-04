@@ -17,6 +17,7 @@ module.exports = {
         "trust-blue": "#0F00B7",
         "trust-green": "#218449",
         "trust-yellow": "#FEC833",
+        "trust-white": "#FFFFFF",
       },
     },
   },
