@@ -11,20 +11,16 @@ const Ballot = require('./ballot')
 
 const userQuery = ({ limit = 10, offset = 0, where = '' }) => {
   return `
-    WITH cte AS(
-      SELECT
-        username,
-        score,
-        DENSE_RANK () OVER (
-          ORDER BY score DESC
-        ) rank
-      FROM "Users"
-      WHERE optout = false
-    )
-    SELECT cte.*,
-          (SELECT SUM(b.score * b.score) FROM "Ballots" b
-              WHERE b.voter = cte.username) as "creditsUsed"
-    FROM cte
+    SELECT
+      username,
+      score,
+      DENSE_RANK () OVER (
+        ORDER BY score DESC
+      ) as rank,
+      (SELECT SUM(b.score * b.score) FROM "Ballots" b
+              WHERE b.voter = u.username) as "creditsUsed"
+    FROM "Users" u
+    WHERE optout = false
     ${where}
     ORDER BY score DESC
     LIMIT ${limit} OFFSET ${offset}
@@ -61,7 +57,7 @@ module.exports = {
     return Boolean(result)
   },
   getUser: async (username = '') => {
-    const where = 'WHERE username = :username'
+    const where = 'AND username = :username'
     const users = await db.query(userQuery({ where }), {
       replacements: { username },
       type: QueryTypes.SELECT,
@@ -95,7 +91,7 @@ module.exports = {
     return data
   },
   searchUsers: async (userSearch, limit = 10) => {
-    const where = `WHERE username ILIKE :username`
+    const where = `AND username ILIKE :username`
     const users = await db.query(userQuery({ limit, where }), {
       type: QueryTypes.SELECT,
       replacements: { username: `%${userSearch}%` },

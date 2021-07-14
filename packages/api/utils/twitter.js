@@ -53,13 +53,14 @@ const buildUserProfile = (users, details) => {
 
   const profiles = users.map((u) => {
     const extra = lut.get(u.username)
+    const rank = parseInt(u.rank, 10)
     if (!extra) {
       return {
         username: u.username,
         name: u.username,
         profileUrl:
           'https://raw.githubusercontent.com/yuetloo/quadratic/main/public/question-circle-solid.svg',
-        rank: u.rank,
+        rank: rank,
         score: u.score,
         credits: 0,
       }
@@ -68,7 +69,7 @@ const buildUserProfile = (users, details) => {
       username: u.username,
       name: extra.name,
       profileUrl: extra.profile_image_url,
-      rank: u.rank,
+      rank: rank,
       score: u.score,
       credits: calculateCredits(
         extra.public_metrics.followers_count,
@@ -94,12 +95,12 @@ class Twitter {
     return profiles[0]
   }
   async getUserProfiles(users) {
-    if (users.length > MAX_USER_PROFILES) {
-      throw new Error(`Too many users. Only supports ${MAX_USER_PROFILES}`)
-    }
-
     if (!users || users.length === 0) {
       return []
+    }
+
+    if (users.length > MAX_USER_PROFILES) {
+      throw new Error(`Too many users. Only supports ${MAX_USER_PROFILES}`)
     }
 
     try {
