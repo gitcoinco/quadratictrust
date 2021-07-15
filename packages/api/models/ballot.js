@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
   class Ballot extends Model {
@@ -12,37 +12,40 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.Ballot.belongsTo(models.User)
     }
-  };
-  Ballot.init({
-    voter: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  }
+  Ballot.init(
+    {
+      voter: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      candidate: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'username',
+        },
+      },
+      score: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
-    candidate: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'username'
-      }
-    },
-    score: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
+    {
+      sequelize,
+      paranoid: true,
+      modelName: 'Ballot',
     }
-  }, {
-    sequelize,
-    paranoid: true,
-    modelName: 'Ballot'
-  });
-  return Ballot;
-};
+  )
+  return Ballot
+}
