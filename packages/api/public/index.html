@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Quadratic Trust API</title>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/swagger-ui.css" />
+    <link rel="stylesheet" type="text/css" href="/api/stylesheets/swagger-ui.css" />
     <style>
       html
       {
@@ -31,13 +31,13 @@
   <body>
     <div id="swagger-ui"></div>
 
-    <script src="/javascripts/swagger-ui-bundle.js" charset="UTF-8"> </script>
-    <script src="/javascripts/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+    <script src="/api/javascripts/swagger-ui-bundle.js" charset="UTF-8"> </script>
+    <script src="/api/javascripts/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
     window.onload = function() {
       // Begin Swagger UI call region
       const ui = SwaggerUIBundle({
-        url: `${window.location.origin}/api.json`,
+        url: `${window.location.origin}/api/api.json`,
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [

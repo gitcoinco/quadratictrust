@@ -1,48 +1,49 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const createError = require('http-errors')
+const express = require('express')
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const logger = require('morgan')
 // do not log query string
 logger.token('url', (req, res) => req._parsedUrl.pathname)
 
-const { verify: verifySession } = require('./middleware/session');
-const db = require('./db');
-const RandomString = require('randomstring');
-const session = require("express-session");
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const { verify: verifySession } = require('./middleware/session')
+const db = require('./db')
+const RandomString = require('randomstring')
+const session = require('express-session')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const sessionStore = new SequelizeStore({
   db,
-  expiration: 60 * 60 * 1000  // session expires every hour
-});
-sessionStore.sync();
+  expiration: 60 * 60 * 1000, // session expires every hour
+})
+sessionStore.sync()
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const searchRouter = require('./routes/search');
-const loginRouter = require('./routes/login');
+const indexRouter = require('./routes/index')
+const usersRouter = require('./routes/users')
+const searchRouter = require('./routes/search')
+const loginRouter = require('./routes/login')
 const logoutRouter = require('./routes/logout')
 const tweetRouter = require('./routes/tweet')
-const ballotsRouter = require('./routes/ballots');
+const ballotsRouter = require('./routes/ballots')
 const optoutRouter = require('./routes/optout')
 const voteRouter = require('./routes/vote')
 
-const app = express();
+const app = express()
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  secret: RandomString.generate(),
-  store: sessionStore,
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(verifySession);
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(
+  session({
+    secret: RandomString.generate(),
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+  })
+)
+app.use(verifySession)
 
-app.use('/api', indexRouter)
+app.use('/api', express.static(path.join(__dirname, 'public')))
 app.use('/api/users', usersRouter)
 app.use('/api/search', searchRouter)
 app.use('/api/login', loginRouter)
@@ -53,9 +54,9 @@ app.use('/api/vote', voteRouter)
 app.use('/api/optout', optoutRouter)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+app.use(function (req, res, next) {
+  next(createError(404))
+})
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -64,4 +65,4 @@ app.use(function (err, req, res, next) {
   res.json({ error: { status, message: err.message } })
 })
 
-module.exports = app;
+module.exports = app

@@ -68,6 +68,7 @@ https://quadratic-trust.herokuapp.com/
    ```
 
 3. heroku
+If you use heroku as your hosting service, follow the following instructions:
 
    1. follow the heroku instruction to download heroku cli
       https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up
@@ -87,6 +88,20 @@ https://quadratic-trust.herokuapp.com/
         - TWITTER_ACCESS_TOKEN_KEY - access token key
         - TWITTER_ACCESS_TOKEN_SECRET - access token secret
 
+4. AWS hosting
+To use AWS ubuntu, you can setup using nginx
+- login to the server and open a terminal
+- git clone this repository
+- follow the instruction in references to setup tls and nginx
+- nginx config: /etc/nginx/sites-available/default
+- after updating the source code,
+   ```
+      cd api
+      npm run restart
+      sudo nginx -t
+      sudo systemctl restart nginx
+   ```
+
 # Troubleshooting
 
 1. Twitter callback url not setup
@@ -96,4 +111,16 @@ https://quadratic-trust.herokuapp.com/
    sudo - u postgres psql
    \c databasename
    create extension pgcrypto;
+   ```
+
+# References
+- [let's encrypt and nginx](https://www.nginx.com/blog/using-free-ssltls-certificates-from-lets-encrypt-with-nginx/)
+- How to install certbot on ubuntu
+   ```
+   which snap
+   sudo snap install core; sudo snap refresh core
+   sudo snap install --classic certbot
+   sudo ln -s /snap/bin/certbot /usr/bin/certbot
+   sudo certbot --nginx
+   systemctl list-timers
    ```
