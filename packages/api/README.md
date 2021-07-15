@@ -1,7 +1,7 @@
 # Quadratic Trust Backend API
 
 live demo:
-https://quadratic-trust.herokuapp.com/
+https://quadratictrust.com/
 
 # Dependency
 * Node
