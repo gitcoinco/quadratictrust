@@ -1,0 +1,342 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Quadratic Trust API",
+    "version": "1.0.0",
+    "title": "Quadratic Trust API",
+    "contact": {
+      "email": "contact@yuetloo.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "quadratic-trust.herokuapp.com",
+  "basePath": "/api",
+  "tags": [],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "list of top users",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of users to skip before starting to collect the result set",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The numbers of users to return",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/users/{username}": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "get user by the username",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "The name to be searched.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/search/{username}": {
+      "get": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search user",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "description": "The name to be searched.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of users to return, default to 10",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/ballots": {
+      "get": {
+        "tags": [
+          "ballots"
+        ],
+        "summary": "List of ballots",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "voter",
+            "in": "query",
+            "description": "The voter",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "candidate",
+            "in": "query",
+            "description": "The candidate",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of ballots to skip before starting to collect the result set",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The numbers of ballots to return",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "logout"
+        ],
+        "summary": "Log out from the app",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/vote": {
+      "post": {
+        "tags": [
+          "vote"
+        ],
+        "summary": "Cast a vote",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "candidate",
+            "description": "The candidate to vote for",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "score",
+            "description": "The number of vote credit to give to the candidate",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "security": [
+          {
+            "app_auth": [
+              "write"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/tweet": {
+      "post": {
+        "tags": [
+          "tweet"
+        ],
+        "summary": "Make a tweet",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "formData",
+            "description": "The message to tweet",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "security": [
+          {
+            "app_auth": [
+              "write"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Require login"
+          }
+        }
+      }
+    },
+    "/optout": {
+      "post": {
+        "tags": [
+          "optout"
+        ],
+        "summary": "Opt out of using this app",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Require login"
+          }
+        },
+        "security": [
+          {
+            "app_auth": [
+              "write"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "app_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://quadratic-trust.herokuapp.com/api/login",
+      "flow": "implicit",
+      "scopes": {
+        "write": "write access"
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "profileUrl": {
+          "type": "string"
+        },
+        "rank": {
+          "type": "integer"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "credits": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
