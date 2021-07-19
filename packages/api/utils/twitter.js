@@ -6,6 +6,9 @@ require('../config/load-config')()
 const USER_PROFILE_FIELDS = 'name,profile_image_url,public_metrics'
 const MAX_USER_PROFILES = 100
 
+const TWITTER_DEFAULT_PROFILE_URL =
+  'https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png'
+
 const handleError = (e) => {
   if ('errors' in e) {
     // Twitter API error
@@ -21,6 +24,12 @@ const handleError = (e) => {
     }
   }
   throw new createError(500, e.message)
+}
+
+// twitter profile url is typically of size 48x48, the _bigger variants is of size 73x73
+// https://developer.twitter.com/en/docs/twitter-api/v1/accounts-and-users/user-profile-images-and-banners
+const toBiggerResolutionUrl = (url = '') => {
+  return url.replace(/\_normal\.(?=[^.]*$)/, '_bigger.')
 }
 
 const createClient = ({
@@ -45,21 +54,15 @@ const calculateCredits = (total = 0, used = 0) => {
   return total - used
 }
 
-const buildUserProfile = (users, details) => {
-  const lut = new Map()
-  details.forEach((item) => {
-    lut.set(item.username, item)
-  })
-
+const buildUserProfile = (users, userMap) => {
   const profiles = users.map((u) => {
-    const extra = lut.get(u.username)
+    const extra = userMap.get(u.username)
     const rank = parseInt(u.rank, 10)
     if (!extra) {
       return {
         username: u.username,
         name: u.username,
-        profileUrl:
-          'https://raw.githubusercontent.com/yuetloo/quadratic/main/public/question-circle-solid.svg',
+        profileUrl: TWITTER_DEFAULT_PROFILE_URL,
         rank: rank,
         score: u.score,
         credits: 0,
@@ -68,7 +71,7 @@ const buildUserProfile = (users, details) => {
     return {
       username: u.username,
       name: extra.name,
-      profileUrl: extra.profile_image_url,
+      profileUrl: toBiggerResolutionUrl(extra.profile_image_url),
       rank: rank,
       score: u.score,
       credits: calculateCredits(
@@ -78,6 +81,27 @@ const buildUserProfile = (users, details) => {
     }
   })
   return profiles
+}
+
+const getUserLookupMap = async (users) => {
+  if (users.length > MAX_USER_PROFILES) {
+    throw new Error(`Too many users. Only supports ${MAX_USER_PROFILES}`)
+  }
+
+  const client = createClient({
+    bearerToken: process.env.TWITTER_BEARER_TOKEN,
+  })
+  const url = 'users/by'
+
+  const usernames = users.map((u) => u.username).join(',')
+  const response = await client.get(url, {
+    usernames,
+    'user.fields': USER_PROFILE_FIELDS,
+  })
+
+  const twitterUsers = response.data || []
+  const lookup = new Map(twitterUsers.map((user) => [user.username, user]))
+  return lookup
 }
 
 class Twitter {
@@ -90,32 +114,40 @@ class Twitter {
       })
     }
   }
+
+  async userWithProfileUrl(users) {
+    if (!users || users.length === 0) {
+      return []
+    }
+
+    try {
+      const userMap = await getUserLookupMap(users)
+      return users.map((u) => {
+        const { profile_image_url } = userMap.get(u.username) || {}
+        const profileUrl = profile_image_url
+          ? toBiggerResolutionUrl(profile_image_url)
+          : TWITTER_DEFAULT_PROFILE_URL
+
+        return { ...u, profileUrl }
+      })
+    } catch (e) {
+      handleError(e)
+    }
+  }
+
   async getUserProfile(user) {
     const profiles = await this.getUserProfiles([user])
     return profiles[0]
   }
+
   async getUserProfiles(users) {
     if (!users || users.length === 0) {
       return []
     }
 
-    if (users.length > MAX_USER_PROFILES) {
-      throw new Error(`Too many users. Only supports ${MAX_USER_PROFILES}`)
-    }
-
     try {
-      const client = createClient({
-        bearerToken: process.env.TWITTER_BEARER_TOKEN,
-      })
-      const url = 'users/by'
-
-      const usernames = users.map((u) => u.username).join(',')
-      const response = await client.get(url, {
-        usernames,
-        'user.fields': USER_PROFILE_FIELDS,
-      })
-
-      return buildUserProfile(users, response.data || [])
+      const userMap = await getUserLookupMap(users)
+      return buildUserProfile(users, userMap)
     } catch (e) {
       handleError(e)
     }

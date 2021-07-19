@@ -1,4 +1,5 @@
 'use strict'
+const Twitter = require('../utils/twitter')
 const { DataTypes, QueryTypes, fn, col } = require('sequelize')
 const db = require('../db')
 
@@ -35,7 +36,8 @@ module.exports = {
       limit,
     })
 
-    return result.map((v) => v.dataValues)
+    const twitter = new Twitter()
+    return result.map((v) => twitter.userWithProfileUrl(v.dataValues))
   },
   delete: (options) => {
     return Ballot.destroy(options)

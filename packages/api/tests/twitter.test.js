@@ -30,3 +30,16 @@ test('search user should work', async () => {
     expect(users).toBeDefined()
   }
 })
+
+test('userWithProfileUrl should work', async () => {
+  const client = new Twitter()
+  const users = [{ username: 'yuetloo' }, { username: 'yuetloo_fake' }]
+  const usersWithUrl = await client.userWithProfileUrl(users)
+
+  expect(usersWithUrl).toHaveLength(users.length)
+  expect(usersWithUrl[0]).toHaveProperty('profileUrl')
+  expect(usersWithUrl[1]).toHaveProperty('profileUrl')
+  expect(usersWithUrl[1].profileUrl).toEqual(
+    expect.stringMatching(/default_profile_bigger\.png$/)
+  )
+})
