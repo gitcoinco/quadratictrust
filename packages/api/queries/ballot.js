@@ -37,7 +37,17 @@ module.exports = {
     })
 
     const twitter = new Twitter()
-    return result.map((v) => twitter.userWithProfileUrl(v.dataValues))
+    const ballots = result.map((v) => v.dataValues)
+    const voters = ballots.map((b) => ({ username: b.voter }))
+    const voterUrls = await twitter.userWithProfileUrl(voters)
+    const candidates = ballots.map((b) => ({ username: b.candidate }))
+    const candidateUrls = await twitter.userWithProfileUrl(candidates)
+
+    return ballots.map((ballot, i) => {
+      const { profileUrl: voterUrl } = voterUrls[i]
+      const { profileUrl: candidateUrl } = candidateUrls[i]
+      return { ...ballot, voterUrl, candidateUrl }
+    })
   },
   delete: (options) => {
     return Ballot.destroy(options)
