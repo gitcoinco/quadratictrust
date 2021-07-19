@@ -44,9 +44,9 @@ module.exports = {
     const candidateUrls = await twitter.userWithProfileUrl(candidates)
 
     return ballots.map((ballot, i) => {
-      const { profileUrl: voterUrl } = voterUrls[i]
-      const { profileUrl: candidateUrl } = candidateUrls[i]
-      return { ...ballot, voterUrl, candidateUrl }
+      const { profileUrl: voterProfileUrl } = voterUrls[i]
+      const { profileUrl: candidateProfileUrl } = candidateUrls[i]
+      return { ...ballot, voterProfileUrl, candidateProfileUrl }
     })
   },
   delete: (options) => {
