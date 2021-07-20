@@ -69,9 +69,9 @@ https://quadratictrust.com/
 
 3. heroku
 
-If you use heroku as your hosting service, follow the following instructions:
+   If you use heroku as your hosting service, follow the following instructions:
 
-   1. follow the heroku instruction to download heroku cli
+   - follow the heroku instruction to download heroku cli
       https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up
 
       ```
@@ -79,7 +79,7 @@ If you use heroku as your hosting service, follow the following instructions:
           git push heroku main
       ```
 
-   2. setup config
+   - setup config
       - go to https://dashboard.heroku.com app settings
       - click the `Reveal Config Vars` to setup these environment variables
         - DATABASE_URL - postgres database url
@@ -91,18 +91,18 @@ If you use heroku as your hosting service, follow the following instructions:
 
 4. AWS hosting
 
-To use AWS ubuntu, you can setup using nginx
-- login to the server and open a terminal
-- git clone this repository
-- follow the instruction in references to setup tls and nginx
-- nginx config: /etc/nginx/sites-available/default
-- after updating the source code,
-   ```
-      cd api
-      npm run restart
-      sudo nginx -t
-      sudo systemctl restart nginx
-   ```
+   To use AWS ubuntu, you can setup using nginx
+   - login to the server and open a terminal
+   - git clone this repository
+   - follow the instruction in references to setup tls and nginx
+   - nginx config: /etc/nginx/sites-available/default
+   - after updating the source code,
+      ```
+         cd api
+         npm run restart
+         sudo nginx -t
+         sudo systemctl restart nginx
+      ```
 
 # Troubleshooting
 
