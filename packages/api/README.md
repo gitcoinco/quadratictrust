@@ -68,6 +68,7 @@ https://quadratictrust.com/
    ```
 
 3. heroku
+
 If you use heroku as your hosting service, follow the following instructions:
 
    1. follow the heroku instruction to download heroku cli
@@ -89,6 +90,7 @@ If you use heroku as your hosting service, follow the following instructions:
         - TWITTER_ACCESS_TOKEN_SECRET - access token secret
 
 4. AWS hosting
+
 To use AWS ubuntu, you can setup using nginx
 - login to the server and open a terminal
 - git clone this repository
