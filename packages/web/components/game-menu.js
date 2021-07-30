@@ -1,12 +1,28 @@
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Router } from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function GameMenu() {
+  async function handleLogout(e) {
+    e.preventDefault();
+    // setDisabled(true);
+    const res = await fetch("https://quadratictrust.com/api/logout");
+    // console.log(res);
+
+    if (res.status === 200) {
+      Router.push("/");
+    }
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault();
+  }
+
   return (
     <Disclosure as="nav">
       {({ open }) => (
@@ -230,16 +246,16 @@ export default function GameMenu() {
                       ABOUT
                     </a>
                   </Link>
-                  <Link href="/login">
-                    <a className="flex ml-4 md:ml-20 lg:ml-16 mr-2">
-                      <button className="hidden sm:block sm:-mt-6 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue">
-                        LOG IN
-                      </button>
+                  <div className="flex ml-4 md:ml-20 lg:ml-16 mr-2">
+                    <a
+                      href="https://quadratictrust.com/api/login"
+                      className="hidden sm:block sm:-mt-6 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue"
+                    >
+                      LOG IN
                     </a>
-                  </Link>
+                  </div>
                 </div>
               </div>
-
               <div className="-mr-2 flex items-center sm:hidden">
                 {/* Mobile menu button */}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-trust-blue">
@@ -262,16 +278,16 @@ export default function GameMenu() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="pt-2 pb-3 space-y-1">
-              <Link
-                href="/login"
-                className="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-              >
-                <a className="flex justify-center ml-4 md:ml-20 lg:ml-16 mr-2">
-                  <button className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue">
+              <div className="block pl-3 pr-4 py-2 border-l-4">
+                <div className="flex justify-center ml-4 md:ml-20 lg:ml-16 mr-4">
+                  <a
+                    href="https://quadratictrust.com/api/login"
+                    className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
+                  >
                     LOG IN
-                  </button>
-                </a>
-              </Link>
+                  </a>
+                </div>
+              </div>
               <Link href="/about">
                 <a className="flex justify-center md:-mt-4 -mt-3 px-4 py-0 md:py-1 font-semibold text-xl text-trust-blue leading-6 tracking-widest focus:underline">
                   ABOUT

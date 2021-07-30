@@ -1,6 +1,16 @@
+import Head from "next/head";
+
 export default function About() {
   return (
     <div className="mt-16 font-karla text-xs sm:text-lg leading-7 text-trust-blue">
+      <Head>
+        <title>About | Quadratic Trust</title>
+        <meta
+          name="description"
+          content="Use the trust you have built to support people you trust"
+        />
+        <link rel="icon" href="/favicons/favicon.ico" />
+      </Head>
       <div className="flex flex-col max-w-4xl mx-auto justify-center px-4">
         <svg
           className="h-full w-full"
@@ -330,7 +340,7 @@ export default function About() {
         </div>
       </div>
       <div className="flex flex-row max-w-4xl mx-auto justify-center space-x-4 px-4">
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-4">
           <svg
             className="h-full w-full"
             width="300"
@@ -342,17 +352,13 @@ export default function About() {
             <rect width="300" height="240" fill="#C4C4C4" fillOpacity="0.4" />
           </svg>
           <div className="hidden sm:flex flex-col">
-            <div className="justify-center mx-auto">
-              To participate, share a tweet
-            </div>
-            <div className="justify-center mx-auto"></div>
-            <div className="justify-center mx-auto">
-              about the person you`re
-            </div>
-            <div className="justify-center mx-auto"></div>
-            <div className="justify-center mx-auto">supporting and</div>
+            <div className="justify-center mx-auto">To participate,</div>
+            <div className="justify-center mx-auto">share a tweet</div>
+            <div className="justify-center mx-auto">about the person</div>
+            <div className="justify-center mx-auto">you`re supporting</div>
+            <div className="justify-center mx-auto">and why</div>
             <div className="justify-center mx-auto mb-4">
-              why they get your vote.
+              they get your vote.
             </div>
           </div>
           <div className="flex sm:hidden flex-col">
@@ -382,7 +388,7 @@ export default function About() {
           </svg>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-4">
           <svg
             className="h-full w-full"
             width="300"
@@ -395,28 +401,28 @@ export default function About() {
           </svg>
           <div className="hidden sm:flex flex-col">
             <div className="justify-center mx-auto">
-              Your follower count determines the
+              Your follower count on Twitter
             </div>
+            <div className="justify-center mx-auto">determines the number</div>
+            <div className="justify-center mx-auto">of voting credits</div>
             <div className="justify-center mx-auto">
-              number of voting credits you have
+              you have to distribute{" "}
             </div>
-            <div className="justify-center mx-auto">
-              to distribute amongst the people
-            </div>
+            <div className="justify-center mx-auto">amongst the people</div>
             <div className="justify-center mx-auto mb-4">
               you want to vote for.
             </div>
           </div>
           <div className="flex sm:hidden flex-col">
-            <div className="justify-center mx-auto">Your follower count</div>
-            <div className="justify-center mx-auto">determines the</div>
+            <div className="justify-center mx-auto">Your follower count on</div>
+            <div className="justify-center mx-auto">Twitter determines the</div>
             <div className="justify-center mx-auto">
               number of voting credits
             </div>
             <div className="justify-center mx-auto">you have to distribute</div>
             <div className="justify-center mx-auto">amongst the people</div>
             <div className="justify-center mx-auto mb-4">
-              you want to vote for.
+              the people you want to vote for.
             </div>
           </div>
         </div>
@@ -525,9 +531,12 @@ export default function About() {
           </div>
         </div>
         <div className="flex justify-center">
-          <button className="font-raleway tracking-widest text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-transparent rounded-md">
+          <a
+            href="https://quadratictrust.com/api/login"
+            className="font-raleway tracking-widest text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-transparent rounded-md"
+          >
             JOIN
-          </button>
+          </a>
         </div>
       </div>
     </div>
