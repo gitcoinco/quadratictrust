@@ -1,9 +1,19 @@
 import VotesReceived from "../../components/votes-received";
+import Head from "next/head";
+
 export default function Handle(props) {
   const currentHandle = props.data.user;
   const trustReceived = props.dataCandidate.data.ballots;
   return (
     <>
+      <Head>
+        <title>{currentHandle.username} | Quadratic Trust</title>
+        <meta
+          name="description"
+          content="Sharing the trust you have got with people you trust"
+        />
+        <link rel="icon" href="/favicons/favicon.ico" />
+      </Head>
       <div className="max-w-6xl mx-auto sm:px-2 md:px-2">
         <div className="flex flex-row">
           <div className="mt-20 hidden lg:px-4 lg:block w-7/12">
@@ -92,7 +102,9 @@ export default function Handle(props) {
                   <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none mr-2 md:mr-4 lining-nums">
                     {currentHandle.score}
                   </div>
-                  <div className="font-karla flex-none text-xs">VOTES</div>
+                  <div className="font-karla flex-none text-xs">
+                    VOTES RECEIVED
+                  </div>
                 </div>
               </div>
             </div>
@@ -117,7 +129,7 @@ export default function Handle(props) {
                 />
               </svg>
               <span className="font-karla font-normal text-2xl text-trust-blue">
-                VOTES DELEGATED
+                VOTES GIVEN
               </span>
             </div>
 
@@ -171,7 +183,7 @@ export default function Handle(props) {
                     VOTES
                   </div>
                   <div className="mt-12 mb-3 flex font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl text-white self-center flex-grow items-center lining-nums">
-                    0123456789
+                    0
                   </div>
                   <svg
                     className="mb-3"
@@ -191,7 +203,7 @@ export default function Handle(props) {
                   </svg>
                   <div className="font-karla font-normal text-base text-white self-end">
                     YOU HAVE{" "}
-                    <span className="text-trust-yellow">
+                    <span className="text-trust-yellow lining-nums">
                       {currentHandle.credits}
                     </span>
                   </div>
@@ -268,7 +280,7 @@ export default function Handle(props) {
                     : "ml-2 mr-2 flex flex-grow flex-col w-16 lg:w-32 items-end text-trust-blue"
                 }
               >
-                <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none">
+                <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none lining-nums">
                   {currentHandle.credits}
                 </div>
                 <div className="font-karla flex-none text-xs">VOTE CREDITS</div>
@@ -289,10 +301,12 @@ export default function Handle(props) {
                     : "flex flex-col w-32 items-start mr-2 md:mr-1 lg:mr-2 text-trust-blue"
                 }
               >
-                <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none mr-2 md:mr-4">
+                <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none mr-2 md:mr-4 lining-nums">
                   {currentHandle.score}
                 </div>
-                <div className="font-karla flex-none text-xs">VOTES</div>
+                <div className="font-karla flex-none text-xs">
+                  VOTES RECEIVED
+                </div>
               </div>
             </div>
             <div className="h-56 md:hidden flex-row items-center">
@@ -360,7 +374,7 @@ export default function Handle(props) {
                     }
                   >
                     <div className="flex flex-col items-center">
-                      <div className="font-raleway font-semibold text-3xl flex-none">
+                      <div className="font-raleway font-semibold text-3xl flex-none lining-nums">
                         {currentHandle.credits}
                       </div>
                       <div className="mb-6 font-karla flex-none text-xs">
@@ -381,7 +395,7 @@ export default function Handle(props) {
                         {currentHandle.score}
                       </div>
                       <div className="mb-6 font-karla flex-none text-xs">
-                        VOTES
+                        VOTES RECEIVED
                       </div>
                     </div>
                   </div>
@@ -436,7 +450,7 @@ export default function Handle(props) {
                   VOTES
                 </div>
                 <div className="mt-12 mb-3 flex font-raleway font-semibold text-xl md:text-2xl lg:text-4xl text-white self-center flex-grow items-center">
-                  0123456789
+                  0
                 </div>
                 <svg
                   className="mb-3"
@@ -456,7 +470,7 @@ export default function Handle(props) {
                 </svg>
                 <div className="font-karla font-normal text-base text-white self-end">
                   YOU HAVE{" "}
-                  <span className="text-trust-yellow">
+                  <span className="text-trust-yellow lining-nums">
                     {currentHandle.credits}
                   </span>
                 </div>
@@ -492,7 +506,7 @@ export default function Handle(props) {
               />
             </svg>
             <span className="font-karla font-normal text-base sm:text-xl md:text-2xl text-trust-blue">
-              VOTES DELEGATED
+              VOTES GIVEN
             </span>
           </div>
           <VotesReceived votesReceived={trustReceived} />
