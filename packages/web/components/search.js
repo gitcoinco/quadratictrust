@@ -1630,7 +1630,7 @@ export default function Search() {
         </div>
         <div className="sm:hidden flex flex-col justify-center space-y-8 mt-3">
           <input
-            className="ml-4 p-4 w-11/12 tracking-widest bg-white border-2 border-trust-blue rounded-md text-trust-blue"
+            className="ml-4 p-4 w-11/12 tracking-widest bg-white placeholder-trust-blue border-2 border-trust-blue rounded-md text-trust-blue"
             type="search"
             placeholder="SEARCH @USERNAME"
             value={username}
@@ -1662,7 +1662,9 @@ export default function Search() {
       </form>
       {username &&
         searchResult &&
-        searchResult.map((searchItem) => <SearchUser user={searchItem} />)}
+        searchResult.map((searchItem, index) => (
+          <SearchUser key={index} user={searchItem} />
+        ))}
     </div>
   );
 }

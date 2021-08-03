@@ -48,7 +48,7 @@ export default function SearchUser(props) {
               </div>
               <div className="flex flex-col sm:w-16 md:w-16 w-32 items-start mr-8 md:mr-0 lg:mr-2 text-trust-blue">
                 <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none mr-2 md:mr-4 lining-nums">
-                  {user.score}
+                  {user.score ? user.score : "0"}
                 </div>
                 <div className="font-karla flex-none text-xs">VOTES</div>
               </div>
@@ -114,7 +114,7 @@ export default function SearchUser(props) {
               <div className="flex-grow text-trust-blue">
                 <div className="flex flex-col items-center">
                   <div className="font-raleway font-semibold text-3xl flex-none">
-                    {user.score}
+                    {user.score ? user.score : "0"}
                   </div>
                   <div className="mb-6 font-karla flex-none text-xs">VOTES</div>
                 </div>
