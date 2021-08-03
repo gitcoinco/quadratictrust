@@ -30,7 +30,7 @@ class MyDocument extends Document {
           <link
             rel="preload"
             href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&family=Karla:wght@400;700&display=swap"
-            rel="stylesheet"
+            as="style"
           />
           <link
             href="https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&family=Karla:wght@400;700&display=swap"

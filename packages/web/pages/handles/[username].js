@@ -1,9 +1,18 @@
 import VotesReceived from "../../components/votes-received";
 import Head from "next/head";
+import { useState } from "react";
 
 export default function Handle(props) {
+  const [counter, setCounter] = useState(0);
   const currentHandle = props.data.user;
   const trustReceived = props.dataCandidate.data.ballots;
+  const increment = () => {
+    setCounter(counter + 1);
+  };
+
+  const decrement = () => {
+    setCounter(counter - 1);
+  };
   return (
     <>
       <Head>
@@ -72,8 +81,8 @@ export default function Handle(props) {
                 <div
                   className={
                     currentHandle.rank < 4
-                      ? "ml-2 mr-2 flex flex-grow flex-col w-16 lg:w-32 items-end text-white"
-                      : "ml-2 mr-2 flex flex-grow flex-col w-16 lg:w-32 items-end text-trust-blue"
+                      ? "ml-2 mr-1 flex flex-grow flex-col w-16 lg:w-32 items-end text-white"
+                      : "ml-2 mr-1 flex flex-grow flex-col w-16 lg:w-32 items-end text-trust-blue"
                   }
                 >
                   <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none lining-nums">
@@ -100,7 +109,7 @@ export default function Handle(props) {
                   }
                 >
                   <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl flex-none mr-2 md:mr-4 lining-nums">
-                    {currentHandle.score}
+                    {currentHandle.score ? currentHandle.score : "0"}
                   </div>
                   <div className="font-karla flex-none text-xs">
                     VOTES RECEIVED
@@ -136,7 +145,7 @@ export default function Handle(props) {
             <VotesReceived votesReceived={trustReceived} />
           </div>
           <div className="mt-20 hidden lg:px-4 lg:block w-5/12">
-            <div className="rounded-lg xl:max-w-screen-xl bg-trust-blue border-trust-blue">
+            <div className="rounded-lg bg-trust-blue border-trust-blue">
               <div className="flex flex-row">
                 <div className="font-karla text-lg font-semibold text-white tracking-widest p-6">
                   VOTE FOR
@@ -147,8 +156,11 @@ export default function Handle(props) {
               </div>
               <div className="flex flex-row">
                 <div className="flex flex-col">
-                  <div className="px-6 py-4 mr-10">
-                    <button className="bg-transparent hover:bg-trust-yellow font-semibold hover:text-trust-blue py-1 px-2 md:py-2 md:px-6 border hover:border-trust-blue rounded items-end text-white border-white tracking-widest text-lg">
+                  <div className="px-6 py-4 mr-10 mb-1.5">
+                    <button
+                      onClick={increment}
+                      className="bg-transparent hover:bg-trust-yellow font-semibold hover:text-trust-blue py-1 px-2 md:py-2 md:px-6 border hover:border-trust-blue rounded items-end text-white border-white tracking-widest text-lg"
+                    >
                       <svg
                         className="fill-current"
                         xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +175,10 @@ export default function Handle(props) {
                     </button>
                   </div>
                   <div className="px-6 py-2">
-                    <button className="bg-transparent hover:bg-trust-yellow font-semibold hover:text-trust-blue py-1 px-2 md:py-2 md:px-6 border hover:border-trust-blue rounded items-end text-white border-white tracking-widest text-lg">
+                    <button
+                      onClick={decrement}
+                      className="bg-transparent hover:bg-trust-yellow font-semibold hover:text-trust-blue py-1 px-2 md:py-2 md:px-6 border hover:border-trust-blue rounded items-end text-white border-white tracking-widest text-lg"
+                    >
                       <svg
                         className="fill-current"
                         xmlns="http://www.w3.org/2000/svg"
@@ -179,32 +194,21 @@ export default function Handle(props) {
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <div className="flex font-karla font-normal text-base text-white self-end">
+                  <div className="flex font-karla font-normal text-base text-white">
                     VOTES
                   </div>
-                  <div className="mt-12 mb-3 flex font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl text-white self-center flex-grow items-center lining-nums">
-                    0
-                  </div>
-                  <svg
-                    className="mb-3"
-                    width="220"
-                    height="1"
-                    viewBox="0 0 220 1"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <line
-                      y1="-0.5"
-                      x2="220"
-                      y2="-0.5"
-                      transform="matrix(1 -8.74228e-08 -8.74228e-08 -1 0 0)"
-                      stroke="#FEC833"
-                    />
-                  </svg>
+                  <input
+                    type="text"
+                    className="mt-16 w-56 block border-0 border-b border-trust-yellow mb-3 font-raleway font-semibold sm:text-xl md:text-2xl lg:text-4xl bg-trust-blue text-white lining-nums placeholder-white focus:border-trust-yellow focus:ring-0"
+                    placeholder="0"
+                    onChange={(e) => setCounter(e.target.value)}
+                    value={counter}
+                  />
+
                   <div className="font-karla font-normal text-base text-white self-end">
                     YOU HAVE{" "}
                     <span className="text-trust-yellow lining-nums">
-                      {currentHandle.credits}
+                      {currentHandle.credits - counter}
                     </span>
                   </div>
                   <div className="font-karla font-normal text-base text-white self-end">
