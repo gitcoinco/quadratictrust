@@ -1,7 +1,7 @@
 # Quadratic Trust Backend API
 
 live demo:
-https://quadratictrust.com/
+https://quadratictrust.com/api
 
 # Dependency
 * Node
