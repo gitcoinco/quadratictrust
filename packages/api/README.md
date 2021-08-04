@@ -88,11 +88,14 @@ https://quadratictrust.com/api
         - TWITTER_BEARER_TOKEN - Bearer Token
         - TWITTER_ACCESS_TOKEN_KEY - access token key
         - TWITTER_ACCESS_TOKEN_SECRET - access token secret
+        - TWITTER_CALLBACK_URL - twitter callback url settings
 
 4. AWS hosting
 
    To use AWS ubuntu, you can setup using nginx
    - login to the server and open a terminal
+   - create an environment file `.env.quadratic` in the home directory to
+     store the environment variable settings listed under the `heroku` section
    - git clone this repository
    - follow the instruction in references to setup tls and nginx
    - nginx config: /etc/nginx/sites-available/default
