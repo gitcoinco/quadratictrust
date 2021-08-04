@@ -44,7 +44,8 @@ router.get('/twitter-callback', async (req, res, next) => {
     }
 
     req.session.auth = auth
-    res.redirect('/callback')
+    const params = new URLSearchParams({ username })
+    res.redirect(`/callback?${params.toString()}`)
   } catch (err) {
     console.log('callback error', err)
     next({ status: 401, message: err.message })
