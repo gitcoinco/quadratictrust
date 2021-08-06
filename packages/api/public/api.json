@@ -302,6 +302,32 @@
           }
         ]
       }
+    },
+    "/identity": {
+      "get": {
+        "tags": [
+          "identity"
+        ],
+        "summary": "Get information about the logged in user",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "app_auth": [
+              "read"
+            ]
+          }
+        ]
+
+      }
     }
   },
   "securityDefinitions": {
