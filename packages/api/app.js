@@ -26,6 +26,7 @@ const tweetRouter = require('./routes/tweet')
 const ballotsRouter = require('./routes/ballots')
 const optoutRouter = require('./routes/optout')
 const voteRouter = require('./routes/vote')
+const identityRouter = require('./routes/identity')
 
 const app = express()
 
@@ -52,6 +53,7 @@ app.use('/api/tweet', tweetRouter)
 app.use('/api/ballots', ballotsRouter)
 app.use('/api/vote', voteRouter)
 app.use('/api/optout', optoutRouter)
+app.use('/api/identity', identityRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
