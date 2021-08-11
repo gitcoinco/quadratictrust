@@ -128,6 +128,10 @@ module.exports = {
         where: { username: candidate },
         transaction
       })
+      await User.findOrCreate({
+        where: { username: voter },
+        transaction
+      })
       await Ballot.save({ voter, candidate, score, transaction })
       const newScore = await updateUserScore(candidate, transaction)
       await transaction.commit();
@@ -173,3 +177,4 @@ module.exports = {
     }
   }
 }
+
