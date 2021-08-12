@@ -10,7 +10,6 @@ module.exports = {
       voter           VARCHAR NOT NULL,
       candidate       VARCHAR NOT NULL,
       score           INT NOT NULL DEFAULT 0,
-      credits         INT NOT NULL DEFAULT 0,
       "createdAt"     TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       "updatedAt"     TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       "deletedAt"     TIMESTAMPTZ,

@@ -57,7 +57,7 @@ const calculateCredits = (total = 0, used = 0) => {
 const buildUserProfile = (users, userMap) => {
   const profiles = users.map((u) => {
     const extra = userMap.get(u.username)
-    const rank = parseInt(u.rank, 10)
+    const rank = u.rank ? parseInt(u.rank, 10) : null
     if (!extra) {
       return {
         username: u.username,
@@ -73,7 +73,7 @@ const buildUserProfile = (users, userMap) => {
       name: extra.name,
       profileUrl: toBiggerResolutionUrl(extra.profile_image_url),
       rank: rank,
-      score: u.score,
+      score: u.score || null,
       credits: calculateCredits(
         extra.public_metrics.followers_count,
         u.creditsUsed

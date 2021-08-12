@@ -6,7 +6,8 @@ module.exports = {
     await queryInterface.sequelize
       .query(`CREATE TABLE IF NOT EXISTS "${tableName}" (
     username       VARCHAR PRIMARY KEY  NOT NULL,
-    score          INTEGER NOT NULL DEFAULT 0,
+    score          INTEGER,
+    "creditsUsed"  INTEGER,
     optout         BOOL NOT NULL DEFAULT FALSE,
     "createdAt"    TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt"    TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP

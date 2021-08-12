@@ -72,4 +72,16 @@ module.exports = {
     })
     return score
   },
+  sumCreditsUsed: async (voter, transaction) => {
+    const result = await db.query(
+      `SELECT SUM(score * score) "creditsUsed" FROM "Ballots" WHERE voter = $voter`,
+      {
+        bind: { voter },
+        type: QueryTypes.SELECT,
+        transaction,
+        plain: true,
+      }
+    )
+    return Number(result?.creditsUsed || 0)
+  },
 }

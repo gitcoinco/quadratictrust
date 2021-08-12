@@ -8,35 +8,68 @@ require('../models/user')(db, DataTypes)
 const { User } = db.models
 const Ballot = require('./ballot')
 
+const rankSubquery = `
+SELECT
+  username,
+  score,
+  "creditsUsed",
+  "createdAt",
+  DENSE_RANK () OVER (ORDER BY score DESC, "createdAt" ASC) as rank
+FROM "Users"
+WHERE optout = false AND score IS NOT NULL`
 
-const userQuery = ({ limit = 10, offset = 0, where = '' }) => {
+const topUserQuery = ({ limit = 10, offset = 0 }) => {
   return `
-    SELECT
-      username,
-      score,
-      DENSE_RANK () OVER (
-        ORDER BY score DESC
-      ) as rank,
-      (SELECT SUM(b.score * b.score) FROM "Ballots" b
-              WHERE b.voter = u.username) as "creditsUsed"
-    FROM "Users" u
-    WHERE optout = false
-    ${where}
-    ORDER BY score DESC
+    WITH cte AS (${rankSubquery})
+    SELECT * FROM cte
+    ORDER BY score DESC, "createdAt" ASC
     LIMIT ${limit} OFFSET ${offset}
 `
 }
 
-const updateUserScore = async (username, transaction ) => {
+const userQuery = `
+    WITH cte AS (${rankSubquery})
+    SELECT u.username, u.optout, u.score, u."creditsUsed", rank
+    FROM "Users" u
+    LEFT OUTER JOIN cte ON u.username = cte.username
+    where u.username = $username
+`
+
+const searchQuery = ({ limit = 10, offset = 0 }) => `
+    WITH cte AS (${rankSubquery})
+    SELECT u.username, u.optout, u.score, u."creditsUsed", rank
+    FROM "Users" u
+    LEFT OUTER JOIN cte ON u.username = cte.username
+    WHERE u.username ILIKE $username
+      AND u.optout = false
+    LIMIT ${limit} OFFSET ${offset}
+`
+
+const updateUserScore = async (username, transaction) => {
   const score = await Ballot.sumScore(username, transaction)
-  await User.update({ score }, {
-    where: { username },
-    transaction
-  })
+  await User.update(
+    { score },
+    {
+      where: { username },
+      transaction,
+    }
+  )
   return score
 }
 
-const adjustCandidateScore = async ({ voter, transaction}) => {
+const updateCreditsUsed = async (username, transaction) => {
+  const creditsUsed = await Ballot.sumCreditsUsed(username, transaction)
+  await User.update(
+    { creditsUsed },
+    {
+      where: { username },
+      transaction,
+    }
+  )
+  return creditsUsed
+}
+
+const adjustCandidateScore = async ({ voter, transaction }) => {
   const candidates = await Ballot.getCandidates(voter, transaction)
   for (let candidate of candidates) {
     await updateUserScore(candidate, transaction)
@@ -46,35 +79,35 @@ const adjustCandidateScore = async ({ voter, transaction}) => {
 module.exports = {
   isOptout: async (username = '') => {
     const result = await User.findOne({
-      attributes: [ "optout" ],
+      attributes: ['optout'],
       where: {
         optout: true,
-        username
+        username,
       },
-      raw: true
+      raw: true,
     })
 
     return Boolean(result)
   },
   getUser: async (username = '') => {
-    const where = 'AND username = :username'
-    const users = await db.query(userQuery({ where }), {
-      replacements: { username },
+    const users = await db.query(userQuery, {
+      bind: { username },
       type: QueryTypes.SELECT,
     })
 
-    if( users.length === 0 ) {
+    if (users.length === 0) {
       users.push({ username })
+    } else if (users[0].optout) {
+      return null
     }
 
     const twitter = new Twitter()
     const profiles = await twitter.getUserProfiles(users)
     return profiles[0]
   },
-  getTopUsers: async ({offset = 0, limit = 10} = {}) => {
-    const users = await db.query(userQuery({offset, limit}),
-    {
-      type: QueryTypes.SELECT
+  getTopUsers: async ({ offset = 0, limit = 10 } = {}) => {
+    const users = await db.query(topUserQuery({ offset, limit }), {
+      type: QueryTypes.SELECT,
     })
 
     const twitter = new Twitter()
@@ -83,98 +116,102 @@ module.exports = {
   count: async () => {
     const data = await User.count({
       where: {
-        optout: false
+        optout: false,
+        score: {
+          [Op.ne]: null,
+        },
       },
-      raw: true
+      raw: true,
     })
 
     return data
   },
   searchUsers: async (userSearch, limit = 10) => {
-    const where = `AND username ILIKE :username`
-    const users = await db.query(userQuery({ limit, where }), {
+    const users = await db.query(searchQuery({ limit }), {
       type: QueryTypes.SELECT,
-      replacements: { username: `%${userSearch}%` },
+      bind: { username: `%${userSearch}%` },
     })
 
     const twitter = new Twitter()
     return twitter.getUserProfiles(users)
   },
   filterOptout: async (users) => {
-    if(!users || users.length === 0 )
-      return []
+    if (!users || users.length === 0) return []
 
-    const usernames = users.map(u => u.username)
+    const usernames = users.map((u) => u.username)
     const result = await User.findAll({
-      attributes: [ "username" ],
+      attributes: ['username'],
       where: {
         optout: true,
-        username: usernames
+        username: usernames,
       },
-      raw: true
+      raw: true,
     })
 
-    if( result.length === 0 ) {
+    if (result.length === 0) {
       return users
     }
 
     const optoutUsers = new Set(result)
-    return users.filter(u => !optoutUsers.has(u.username))
+    return users.filter((u) => !optoutUsers.has(u.username))
   },
-  castVote: async ({voter, candidate, score}) => {
-    const transaction = await db.queryInterface.sequelize.transaction();
+  castVote: async ({ voter, candidate, score }) => {
+    const transaction = await db.queryInterface.sequelize.transaction()
     try {
       await User.findOrCreate({
         where: { username: candidate },
-        transaction
+        transaction,
       })
       await User.findOrCreate({
         where: { username: voter },
-        transaction
+        transaction,
       })
       await Ballot.save({ voter, candidate, score, transaction })
       const newScore = await updateUserScore(candidate, transaction)
-      await transaction.commit();
+      await updateCreditsUsed(voter, transaction)
+      await transaction.commit()
       return newScore
     } catch (err) {
       console.log('castVote error', err)
-      await transaction.rollback();
+      await transaction.rollback()
       throw err
     }
   },
   setOptout: async (username) => {
-    if(!username) return
+    if (!username) return
 
-    const transaction = await db.queryInterface.sequelize.transaction();
+    const transaction = await db.queryInterface.sequelize.transaction()
     const now = new Date()
     const voter = username
 
     try {
-      const res = await User.update({ optout: true, updatedAt: now }, {
-        where: {
-          username
-        },
-        transaction
-      })
+      const res = await User.update(
+        { optout: true, updatedAt: now },
+        {
+          where: {
+            username,
+          },
+          transaction,
+        }
+      )
 
-      await adjustCandidateScore({voter, transaction})
+      await adjustCandidateScore({ voter, transaction })
 
       await Ballot.delete({
         where: {
           [Op.or]: {
             voter,
-            candidate: username
-          }
+            candidate: username,
+          },
         },
-        transaction
+        transaction,
       })
 
-      await transaction.commit();
+      await transaction.commit()
     } catch (err) {
       console.log('err', err)
-      await transaction.rollback();
+      await transaction.rollback()
       throw err
     }
-  }
+  },
 }
-

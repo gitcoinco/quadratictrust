@@ -6,6 +6,8 @@ const logger = require('morgan')
 // do not log query string
 logger.token('url', (req, res) => req._parsedUrl.pathname)
 
+const ONE_HOUR = 60 * 60 * 1000
+
 const { verify: verifySession } = require('./middleware/session')
 const db = require('./db')
 const RandomString = require('randomstring')
@@ -13,7 +15,7 @@ const session = require('express-session')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const sessionStore = new SequelizeStore({
   db,
-  expiration: 60 * 60 * 1000, // session expires every hour
+  expiration: ONE_HOUR, // session expires every hour
 })
 sessionStore.sync()
 
@@ -40,6 +42,7 @@ app.use(
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
+    maxAge: ONE_HOUR,
   })
 )
 app.use(verifySession)
