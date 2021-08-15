@@ -1,6 +1,9 @@
+import { useContext } from "react";
+import { UserContext } from "../lib/UserContext";
 import Head from "next/head";
 
 export default function About() {
+  const [user] = useContext(UserContext);
   return (
     <div className="mt-16 font-karla text-xs sm:text-lg leading-7 text-trust-blue">
       <Head>
@@ -530,14 +533,20 @@ export default function About() {
             the winner gets a special NFT!
           </div>
         </div>
-        <div className="flex justify-center">
-          <a
-            href="https://quadratictrust.com/api/login"
-            className="font-raleway tracking-widest text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-transparent rounded-md"
-          >
-            JOIN
-          </a>
-        </div>
+        {user?.loading ? (
+          <></>
+        ) : user?.username == null ? (
+          <div className="flex justify-center">
+            <a
+              href="https://quadratictrust.com/api/login"
+              className="font-raleway tracking-widest text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-trust-blue rounded-md"
+            >
+              JOIN
+            </a>
+          </div>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
