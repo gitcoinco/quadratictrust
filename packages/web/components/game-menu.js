@@ -1,26 +1,27 @@
+import { useContext } from "react";
+import { UserContext } from "../lib/UserContext";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { Router } from "next/router";
+import Router from "next/router";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function GameMenu() {
+  const [user, setUser] = useContext(UserContext);
   async function handleLogout(e) {
     e.preventDefault();
-    // setDisabled(true);
-    const res = await fetch("https://quadratictrust.com/api/logout");
-    // console.log(res);
-
-    if (res.status === 200) {
-      Router.push("/");
+    try {
+      const res = await fetch("https://quadratictrust.com/api/logout");
+      if (res.status === 200) {
+        setUser({ username: null });
+        Router.push("/");
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  }
-
-  async function handleLogin(e) {
-    e.preventDefault();
   }
 
   return (
@@ -242,22 +243,45 @@ export default function GameMenu() {
               <div className="sm:flex items-center">
                 <div className="px-2 pt-2 pb-5 sm:flex sm:py-0 sm:px-0">
                   <Link href="/about">
-                    <a className="hidden sm:block md:-mt-4 mr-6 sm:-mr-2 md:-mr-16 lg:-mr-12 -mt-3 px-3 py-0 md:py-1 font-semibold text-xl text-trust-blue leading-6 tracking-widest focus:underline">
+                    <a className="hidden sm:block md:mt-2 mr-6 sm:mr-1 sm:mt-2 md:-mr-16 lg:-mr-12 -mt-3 px-3 py-0 md:py-1 font-semibold text-xl text-trust-blue leading-6 tracking-widest focus:underline">
                       ABOUT
                     </a>
                   </Link>
                   <div className="flex ml-4 md:ml-20 lg:ml-16 mr-2">
-                    <a
-                      href="https://quadratictrust.com/api/login"
-                      className="hidden sm:block sm:-mt-6 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue"
-                    >
-                      LOG IN
-                    </a>
+                    {user?.loading ? (
+                      <></>
+                    ) : user?.username ? (
+                      <div className="flex">
+                        <Link href={`/handles/${user.username}`}>
+                          <a>
+                            <img
+                              className="hidden sm:flex shadow-xl h-12 w-12 rounded-full mr-6"
+                              src={user.profileUrl}
+                              alt=""
+                            />
+                          </a>
+                        </Link>
+                        <form onSubmit={handleLogout} className="mt-4 -mr-4">
+                          <button
+                            type="submit"
+                            className="hidden sm:block sm:-mt-3.5 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue"
+                          >
+                            LOG OUT
+                          </button>
+                        </form>
+                      </div>
+                    ) : (
+                      <a
+                        href="https://quadratictrust.com/api/login"
+                        className="hidden sm:block sm:-mt-0 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue"
+                      >
+                        LOG IN
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
               <div className="-mr-2 flex items-center sm:hidden">
-                {/* Mobile menu button */}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-trust-blue">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -275,17 +299,43 @@ export default function GameMenu() {
               </div>
             </div>
           </div>
-
           <Disclosure.Panel className="sm:hidden">
             <div className="pt-2 pb-3 space-y-1">
               <div className="block pl-3 pr-4 py-2 border-l-4">
-                <div className="flex justify-center ml-4 md:ml-20 lg:ml-16 mr-4">
-                  <a
-                    href="https://quadratictrust.com/api/login"
-                    className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
-                  >
-                    LOG IN
-                  </a>
+                <div className="flex justify-center">
+                  {user?.loading ? (
+                    <></>
+                  ) : user?.username ? (
+                    <div className="flex flex-col">
+                      <Link href={`/handles/${user.username}`}>
+                        <a className="flex justify-center">
+                          <img
+                            className="shadow-xl h-12 w-12 rounded-full"
+                            src={user.profileUrl}
+                            alt=""
+                          />
+                        </a>
+                      </Link>
+                      <form
+                        onSubmit={handleLogout}
+                        className="mt-1 justify-center"
+                      >
+                        <button
+                          type="submit"
+                          className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
+                        >
+                          LOGOUT
+                        </button>
+                      </form>
+                    </div>
+                  ) : (
+                    <a
+                      href="https://quadratictrust.com/api/login"
+                      className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
+                    >
+                      LOG IN
+                    </a>
+                  )}
                 </div>
               </div>
               <Link href="/about">
