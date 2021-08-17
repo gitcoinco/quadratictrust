@@ -33,7 +33,7 @@ export default function GameMenu() {
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
                   <Link href="/">
-                    <a>
+                    <a aria-label="Quadratic Trust">
                       <svg
                         className="block sm:hidden mt-1"
                         width="150"
