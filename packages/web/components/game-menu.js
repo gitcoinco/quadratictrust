@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../lib/UserContext";
+import { LoggedContext } from "../lib/LoggedContext";
 import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
@@ -11,12 +12,14 @@ function classNames(...classes) {
 
 export default function GameMenu() {
   const [user, setUser] = useContext(UserContext);
+  const [disabled, setDisabled] = useContext(LoggedContext);
   async function handleLogout(e) {
     e.preventDefault();
     try {
       const res = await fetch("https://quadratictrust.com/api/logout");
       if (res.status === 200) {
         setUser({ username: null });
+        setDisabled(false);
         Router.push("/");
       }
     } catch (error) {
@@ -28,7 +31,7 @@ export default function GameMenu() {
     <Disclosure as="nav">
       {({ open }) => (
         <>
-          <div className="font-raleway mt-2  bg-white">
+          <div className="font-raleway">
             <div className="flex justify-between px-4 py-3">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center">
@@ -264,7 +267,7 @@ export default function GameMenu() {
                         <form onSubmit={handleLogout} className="mt-4 -mr-4">
                           <button
                             type="submit"
-                            className="hidden sm:block sm:-mt-3.5 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue"
+                            className="hidden sm:block sm:-mt-3.5 sm:bg-white sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-trust-blue"
                           >
                             LOG OUT
                           </button>
@@ -273,7 +276,7 @@ export default function GameMenu() {
                     ) : (
                       <a
                         href="https://quadratictrust.com/api/login"
-                        className="hidden sm:block sm:-mt-0 sm:bg-transparent sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue"
+                        className="hidden sm:block sm:-mt-0 sm:bg-white sm:hover:bg-trust-yellow sm:font-semibold sm:tracking-widest sm:hover:text-trust-blue sm:text-xl sm:py-1.5 sm:px-4 sm:border-2 sm:hover:border-trust-blue sm:rounded sm:mr-4 sm:items-end sm:text-trust-blue sm:border-trust-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-trust-blue"
                       >
                         LOG IN
                       </a>
@@ -322,7 +325,7 @@ export default function GameMenu() {
                       >
                         <button
                           type="submit"
-                          className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
+                          className="mt-10 mb-10 bg-white hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
                         >
                           LOGOUT
                         </button>
@@ -331,7 +334,7 @@ export default function GameMenu() {
                   ) : (
                     <a
                       href="https://quadratictrust.com/api/login"
-                      className="mt-10 mb-10 bg-transparent hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue"
+                      className="mt-10 mb-10 bg-white hover:bg-trust-yellow font-semibold tracking-widest hover:text-trust-blue text-xl py-2 px-4 border-2 hover:border-trust-blue rounded text-trust-blue border-trust-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-trust-blue"
                     >
                       LOG IN
                     </a>
