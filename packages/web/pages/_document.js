@@ -60,6 +60,22 @@ class MyDocument extends Document {
             href="/favicons/safari-pinned-tab.svg"
             rel="mask-icon"
           />
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=G-EYNMLSETH4`}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-EYNMLSETH4', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
+          />
         </Head>
         <body>
           <Main />

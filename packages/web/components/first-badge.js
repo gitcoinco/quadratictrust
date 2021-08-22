@@ -10,16 +10,16 @@ export default function FirstBadge() {
     >
       <path
         d="M0 90V2C0 0.895431 0.895431 0 2 0H38C39.1046 0 40 0.89543 40 2V90L20 78.75L0 90Z"
-        fill="#218449"
+        fill="#FEC833"
       />
       <path
         d="M17.2658 35C18.2658 34.8533 19.1458 34.5 19.9058 33.94H21.6858V47H19.3258V36.76C18.6458 37.0933 17.9591 37.26 17.2658 37.26V35Z"
-        fill="#FEC833"
+        fill="#0F00B7"
       />
       <line x1="5" y1="59.5" x2="35" y2="59.5" stroke="url(#paint0_linear)" />
       <line x1="5" y1="62.5" x2="35" y2="62.5" stroke="url(#paint1_linear)" />
       <line x1="5" y1="65.5" x2="35" y2="65.5" stroke="url(#paint2_linear)" />
-      <path d="M14 14L17 17.2L20 14L23 17.2L26 14V22H14V14Z" fill="#FEC833" />
+      <path d="M14 14L17 17.2L20 14L23 17.2L26 14V22H14V14Z" fill="#0F00B7" />
       <defs>
         <linearGradient
           id="paint0_linear"
@@ -29,9 +29,9 @@ export default function FirstBadge() {
           y2="60"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FEC833" stopOpacity="0" />
-          <stop offset="0.51875" stopColor="#FEC833" />
-          <stop offset="1" stopColor="#FEC833" stopOpacity="0" />
+          <stop stopColor="#0F00B7" stopOpacity="0" />
+          <stop offset="0.51875" stopColor="#0F00B7" />
+          <stop offset="1" stopColor="#0F00B7" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear"
@@ -41,9 +41,9 @@ export default function FirstBadge() {
           y2="63"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FEC833" stopOpacity="0" />
-          <stop offset="0.51875" stopColor="#FEC833" />
-          <stop offset="1" stopColor="#FEC833" stopOpacity="0" />
+          <stop stopColor="#0F00B7" stopOpacity="0" />
+          <stop offset="0.51875" stopColor="#0F00B7" />
+          <stop offset="1" stopColor="#0F00B7" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint2_linear"
@@ -53,9 +53,9 @@ export default function FirstBadge() {
           y2="66"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FEC833" stopOpacity="0" />
-          <stop offset="0.51875" stopColor="#FEC833" />
-          <stop offset="1" stopColor="#FEC833" stopOpacity="0" />
+          <stop stopColor="#0F00B7" stopOpacity="0" />
+          <stop offset="0.51875" stopColor="#0F00B7" />
+          <stop offset="1" stopColor="#0F00B7" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>

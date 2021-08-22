@@ -10,11 +10,11 @@ export default function ThirdBadge() {
     >
       <path
         d="M0 90V2C0 0.895431 0.895431 0 2 0H38C39.1046 0 40 0.89543 40 2V90L20 78.75L0 90Z"
-        fill="#1D904B"
+        fill="#FEC833"
       />
       <path
         d="M19.9593 35.9C18.506 35.9 17.6593 36.4533 17.4193 37.56H14.9393C15.0726 36.28 15.5926 35.3133 16.4993 34.66C17.3526 34.06 18.4726 33.76 19.8593 33.76C21.286 33.76 22.446 34.0933 23.3393 34.76C24.2726 35.44 24.7393 36.3133 24.7393 37.38C24.7393 38.0467 24.5593 38.6267 24.1993 39.12C23.8393 39.6 23.306 39.96 22.5993 40.2C23.386 40.4667 24.0126 40.8667 24.4793 41.4C24.9593 41.92 25.1993 42.52 25.1993 43.2C25.1993 43.88 25.0726 44.46 24.8193 44.94C24.5793 45.42 24.2326 45.8333 23.7793 46.18C22.8193 46.9133 21.5726 47.28 20.0393 47.28C18.5726 47.28 17.3393 46.9067 16.3393 46.16C15.2193 45.3467 14.6593 44.2667 14.6593 42.92H17.1793C17.2193 43.6 17.4926 44.1333 17.9993 44.52C18.5193 44.9067 19.1926 45.1 20.0193 45.1C20.846 45.1 21.486 44.92 21.9393 44.56C22.406 44.1867 22.6393 43.72 22.6393 43.16C22.6393 42.5867 22.426 42.14 21.9993 41.82C21.586 41.5 20.926 41.34 20.0193 41.34H18.2993V39.48H19.7793C20.5393 39.48 21.1326 39.32 21.5593 39C21.986 38.6667 22.1993 38.2333 22.1993 37.7C22.1993 37.1667 22.0126 36.7333 21.6393 36.4C21.2793 36.0667 20.7193 35.9 19.9593 35.9Z"
-        fill="#FEC833"
+        fill="#0F00B7"
       />
       <line x1="5" y1="59.5" x2="35" y2="59.5" stroke="url(#paint0_linear)" />
       <line x1="5" y1="19.5" x2="35" y2="19.5" stroke="url(#paint1_linear)" />
@@ -27,9 +27,9 @@ export default function ThirdBadge() {
           y2="60"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FEC833" stopOpacity="0" />
-          <stop offset="0.51875" stopColor="#FEC833" />
-          <stop offset="1" stopColor="#FEC833" stopOpacity="0" />
+          <stop stopColor="#0F00B7" stopOpacity="0" />
+          <stop offset="0.51875" stopColor="#0F00B7" />
+          <stop offset="1" stopColor="#0F00B7" stopOpacity="0" />
         </linearGradient>
         <linearGradient
           id="paint1_linear"
@@ -39,9 +39,9 @@ export default function ThirdBadge() {
           y2="20"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#FEC833" stopOpacity="0" />
-          <stop offset="0.51875" stopColor="#FEC833" />
-          <stop offset="1" stopColor="#FEC833" stopOpacity="0" />
+          <stop stopColor="#0F00B7" stopOpacity="0" />
+          <stop offset="0.51875" stopColor="#0F00B7" />
+          <stop offset="1" stopColor="#0F00B7" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
