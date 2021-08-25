@@ -5,10 +5,18 @@ const router = express.Router()
 const User = require('../queries/user')
 const Twitter = require('../utils/twitter')
 
+function isEqual(user1 = '', user2 = '') {
+  return user1.localeCompare(user2, 'en', { sensitivity: 'base' }) === 0
+}
+
 async function validate(req) {
+  const { username: voter } = req.auth
   const { candidate, score } = req.body
   if (!candidate) {
     throw new createError(400, 'Missing candidate')
+  }
+  if (isEqual(candidate, voter)) {
+    throw new createError(400, 'Cannot vote for yourself')
   }
   if (!score) {
     throw new createError(400, 'Missing score')
