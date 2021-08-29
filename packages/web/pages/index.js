@@ -3,13 +3,12 @@ import { UserContext } from "../lib/UserContext";
 import { LoggedContext } from "../lib/LoggedContext";
 import Head from "next/head";
 import Search from "../components/search";
-// import LeaderboardTime from "../components/leaderboard-time";
 import LeaderboardHeader from "../components/leaderboard-header";
-import LeaderboardUser from "../components/leaderboard-user";
+import Leaderboard from "../components/leaderboard";
 
 export default function Home(data) {
   const [user] = useContext(UserContext);
-  const [disabled] = useContext(LoggedContext);
+  const [enabled] = useContext(LoggedContext);
   return (
     <div>
       <Head>
@@ -23,7 +22,7 @@ export default function Home(data) {
       </Head>
       <Search />
       <LeaderboardHeader />
-      <LeaderboardUser data={data} />
+      <Leaderboard data={data} />
     </div>
   );
 }
