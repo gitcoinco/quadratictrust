@@ -1,23 +1,33 @@
 import { useState } from "react";
-import SearchUser from "../components/search-user";
+import UserCard from "../components/user-card";
 import Image from "next/image";
 import hero from "../public/hero.svg";
 
 export default function Search() {
   const [username, setUsername] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const [searchResult, setSearchResult] = useState(null);
+  const [search, setSearch] = useState(false);
+  const [noResults, setNoResults] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSearch(true);
     const res = await fetch(
       `https://quadratictrust.com/api/search/${username}`
     );
     const result = await res.json();
+    setSearch(false);
     setSearchResult(result.users);
+    if (result.users.length === 0) {
+      setNoResults(true);
+    }
   };
+
   const handleChange = (event) => {
     setUsername(event.target.value);
     if (username === "") {
-      setSearchResult([]);
+      setSearchResult(null);
+      setNoResults(false);
     }
   };
   return (
@@ -90,8 +100,18 @@ export default function Search() {
       {username &&
         searchResult &&
         searchResult.map((searchItem, index) => (
-          <SearchUser key={index} user={searchItem} />
+          <UserCard key={index} user={searchItem} />
         ))}
+      {searchResult === null && search && (
+        <div className="flex max-w-6xl mx-auto justify-center mt-4 font-raleway text-lg text-trust-blue sm:px-2 md:px-2">
+          SEARCHING...
+        </div>
+      )}
+      {username && noResults && (
+        <div className="flex max-w-6xl mx-auto justify-center mt-4 font-raleway text-lg text-trust-blue sm:px-2 md:px-2">
+          NO RESULTS
+        </div>
+      )}
     </>
   );
 }
