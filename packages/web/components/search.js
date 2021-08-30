@@ -104,7 +104,27 @@ export default function Search() {
         ))}
       {searchResult === null && search && (
         <div className="flex max-w-6xl mx-auto justify-center mt-4 font-raleway text-lg text-trust-blue sm:px-2 md:px-2">
-          SEARCHING...
+          <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+            <path
+              d="M6.59375 12.7125L9.40475 1"
+              stroke="#0F00B7"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M13.1101 10.0434L2.8899 3.66903"
+              stroke="#0F00B7"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M13.8186 5.30299L2.18084 8.40909"
+              stroke="#0F00B7"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+          <span>SEARCHING...</span>
         </div>
       )}
       {username && noResults && (
