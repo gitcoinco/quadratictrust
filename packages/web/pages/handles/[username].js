@@ -3,11 +3,11 @@ import { UserContext } from "../../lib/UserContext";
 import { LoggedContext } from "../../lib/LoggedContext";
 import { Dialog, Transition } from "@headlessui/react";
 import Head from "next/head";
-import VotesReceived from "../../components/votes-received";
 import Badge from "../../components/badge";
 import FirstBadge from "../../components/first-badge";
 import SecondBadge from "../../components/second-badge";
 import ThirdBadge from "../../components/third-badge";
+import Tabs from "../../components/tabs";
 
 export default function Handle(props) {
   const [enabled] = useContext(LoggedContext);
@@ -17,7 +17,6 @@ export default function Handle(props) {
   const [isOpen, setIsOpen] = useState(false);
   const cancelButtonRef = useRef(null);
   const currentHandle = props.data.user;
-  const trustReceived = props.dataCandidate.data.ballots;
 
   function closeModal() {
     setIsOpen(false);
@@ -202,31 +201,7 @@ export default function Handle(props) {
                 </div>
               </div>
             </div>
-            <div className="mt-20 mb-10 flex flex-row">
-              <span className="font-karla text-2xl font-bold text-trust-blue">
-                VOTES RECEIVED
-              </span>
-              <svg
-                className="items-start -mt-1 ml-2 mr-2"
-                width="1"
-                height="40"
-                viewBox="0 0 1 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <line
-                  x1="0.5"
-                  y1="2.18557e-08"
-                  x2="0.499998"
-                  y2="40"
-                  stroke="#0F00B7"
-                />
-              </svg>
-              <span className="font-karla font-normal text-2xl text-trust-blue">
-                VOTES GIVEN
-              </span>
-            </div>
-            <VotesReceived votesReceived={trustReceived} />
+            <Tabs handle={currentHandle.username} />
           </div>
           <div className="mt-20 hidden lg:px-4 lg:block w-5/12">
             {user?.loading ? (
@@ -684,31 +659,7 @@ export default function Handle(props) {
               </div>
             </div>
           )}
-          <div className="mt-20 mb-10 flex flex-row">
-            <span className="font-karla text-base sm:text-xl md:text-2xl font-bold text-trust-blue">
-              VOTES RECEIVED
-            </span>
-            <svg
-              className="items-start -mt-1 ml-2 mr-2"
-              width="1"
-              height="40"
-              viewBox="0 0 1 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line
-                x1="0.5"
-                y1="2.18557e-08"
-                x2="0.499998"
-                y2="40"
-                stroke="#0F00B7"
-              />
-            </svg>
-            <span className="font-karla font-normal text-base sm:text-xl md:text-2xl text-trust-blue">
-              VOTES GIVEN
-            </span>
-          </div>
-          <VotesReceived votesReceived={trustReceived} />
+          <Tabs handle={currentHandle.username} />
         </div>
       </div>
       <Transition show={isOpen} as={Fragment}>
@@ -730,8 +681,6 @@ export default function Handle(props) {
             >
               <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
-
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="hidden sm:inline-block sm:align-middle sm:h-screen"
               aria-hidden="true"
@@ -803,30 +752,12 @@ export async function getServerSideProps(context) {
   const { username } = context.query;
   const res = await fetch(`https://quadratictrust.com/api/users/${username}`);
   const data = await res.json();
-  const resVoter = await fetch(
-    `https://quadratictrust.com/api/ballots?voter=${username}`
-  );
-  const dataVoter = await resVoter.json();
-  const resCandidate = await fetch(
-    `https://quadratictrust.com/api/ballots?candidate=${username}`
-  );
-  const dataCandidate = await resCandidate.json();
   if (!data) {
     return {
       notFound: true,
     };
   }
-  if (!dataVoter) {
-    return {
-      notFound: true,
-    };
-  }
-  if (!dataCandidate) {
-    return {
-      notFound: true,
-    };
-  }
   return {
-    props: { data, dataVoter, dataCandidate },
+    props: { data },
   };
 }
