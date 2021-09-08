@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CastContext } from "../lib/CastContext";
+import { TwitterContext } from "../lib/TwitterContext";
+import QuadraticGiven from "./quadratic-given";
 import getData from "../../web/lib/utils";
 
 export default function VotesGiven(props) {
@@ -6,6 +9,8 @@ export default function VotesGiven(props) {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [given, setGiven] = useState(null);
+  const [cast] = useContext(CastContext);
+  const [twitterHandle] = useContext(TwitterContext);
 
   useEffect(() => {
     getData(`https://quadratictrust.com/api/ballots?voter=${voter}`)
@@ -17,7 +22,7 @@ export default function VotesGiven(props) {
         setError(error);
         setIsLoading(false);
       });
-  }, []);
+  }, [voter, cast, twitterHandle]);
 
   if (error) {
     return (
@@ -29,7 +34,7 @@ export default function VotesGiven(props) {
 
   if (isLoading) {
     return (
-      <div className="flex flex-row text-trust-blue">
+      <div className="flex flex-row mt-2 font-karla text-trust-blue">
         <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
           <path
             d="M6.59375 12.7125L9.40475 1"
@@ -65,33 +70,7 @@ export default function VotesGiven(props) {
 
   return (
     <div className="max-w-6xl mx-auto">
-      {given.map((trust) => (
-        <div
-          key={trust.createdAt}
-          className="mt-2 rounded-lg xl:max-w-screen-xl bg-white border-2 border-trust-blue"
-        >
-          <div className="h-20 flex flex-row items-center">
-            <div className="ml-2 md:mr-2 mr-4 inline-block p-0.5 rounded-full bg-white">
-              <img
-                className="h-6 w-6 md:h-10 md:w-10 lg:h-16 lg:w-16 rounded-full"
-                src={trust.candidateProfileUrl}
-                alt={trust.candidate}
-              />
-            </div>
-            <div className="flex flex-col w-32 md:w-48 lg:w-60 text-trust-blue">
-              <div className="font-karla font-normal flex-none text-xs md:text-base">
-                @{trust.candidate}
-              </div>
-            </div>
-            <div className="flex flex-grow flex-col w-32 items-end mr-8 md:mr-2 lg:mr-4 text-trust-blue">
-              <div className="font-raleway font-semibold sm:text-xl md:text-2xl lg:tex-4xl flex lining-nums">
-                {trust.score}
-              </div>
-              <div className="font-karla flex text-xs">VOTES</div>
-            </div>
-          </div>
-        </div>
-      ))}
+      {given.length != 0 && <QuadraticGiven votes={given} />}
     </div>
   );
 }

@@ -1,7 +1,16 @@
+import { useMemo, useState } from "react";
 import UserCard from "../components/user-card";
+import Pagination from "./pagination";
 
 export default function Leaderboard(props) {
-  const users = props.data.data.users;
+  const [currentPage, setCurrentPage] = useState(1);
+  const allData = props.data.data.users;
+  let PageSize = 10;
+  const users = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return allData.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage]);
   return (
     <>
       {users.map((user) => (
@@ -14,6 +23,12 @@ export default function Leaderboard(props) {
           </div>
         </div>
       ))}
+      <Pagination
+        currentPage={currentPage}
+        totalCount={allData.length}
+        pageSize={PageSize}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
     </>
   );
 }
