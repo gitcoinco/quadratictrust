@@ -33,7 +33,7 @@ export default function UserCard(props) {
                           className={
                             user.rank < 10
                               ? ""
-                              : "transform rotate-90 relative -ml-1"
+                              : "transform rotate-90 relative -ml-1.5"
                           }
                         >
                           {user.rank ? user.rank : "-"}
@@ -50,7 +50,7 @@ export default function UserCard(props) {
                   }
                 >
                   <img
-                    className="h-16 w-16 rounded-full sm:h-16 sm:w-16 md:h-14 md:w-14 lg:h-16 lg:w-16"
+                    className="h-16 w-16 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-full"
                     src={user.profileUrl}
                     alt={user.name}
                   />

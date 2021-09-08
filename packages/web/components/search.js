@@ -38,7 +38,7 @@ export default function Search() {
           <div className="hidden sm:block justify-center mt-3">
             <div className="flex flex-row space-x-4 lg:space-x-8 justify-center">
               <input
-                className="flex-grow max-w-md md:max-w-lg placeholder-trust-blue tracking-widest block bg-white border-2 border-trust-blue rounded-md p-4 text-trust-blue"
+                className="flex-grow max-w-md md:max-w-lg placeholder-trust-blue tracking-widest block bg-white border-2 border-trust-blue rounded-md p-4 text-trust-blue focus:ring-trust-blue focus:border-trust-blue"
                 type="search"
                 placeholder="SEARCH @USERNAME"
                 value={username}
