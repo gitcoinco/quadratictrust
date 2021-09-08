@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../lib/UserContext";
+import { LoggedContext } from "../lib/LoggedContext";
 import Head from "next/head";
 import Image from "next/image";
 import quadratic from "../public/quadratic.svg";
@@ -9,6 +10,12 @@ import trust from "../public/trust.svg";
 
 export default function About() {
   const [user] = useContext(UserContext);
+  const [enabled] = useContext(LoggedContext);
+  useEffect(() => {
+    if (!enabled) {
+      window.localStorage.setItem("path", "/about");
+    }
+  }, []);
   return (
     <div className="mt-16 font-karla text-xs leading-7 text-trust-blue sm:text-lg">
       <Head>
@@ -49,6 +56,14 @@ export default function About() {
           </div>
           <div className="flex justify-center sm:hidden">
             with their social capital in the community
+          </div>
+          <div className="flex justify-center mt-6 -mb-1">
+            <a
+              href="https://anneconnelly.medium.com/quadratic-trust-339e3569475d"
+              className="font-raleway tracking-widest text-lg md:text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-trust-blue rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-trust-blue"
+            >
+              READ THE BLOG
+            </a>
           </div>
           <div className="flex max-w-max mx-auto">
             <svg
@@ -302,7 +317,7 @@ export default function About() {
           <div className="flex justify-center">
             <a
               href="https://quadratictrust.com/api/login"
-              className="font-raleway tracking-widest text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-trust-blue rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-trust-blue"
+              className="font-raleway tracking-widest text-lg md:text-xl bg-trust-blue hover:bg-trust-yellow border-2 font-semibold hover:text-trust-blue text-white border-trust-blue px-12 py-4 hover:border-trust-blue rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-trust-blue"
             >
               JOIN
             </a>
