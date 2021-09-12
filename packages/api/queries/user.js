@@ -155,6 +155,24 @@ module.exports = {
     const optoutUsers = new Set(result)
     return users.filter((u) => !optoutUsers.has(u.username))
   },
+  addVoteInfo: async (users) => {
+    if (!users || users.length === 0) return []
+
+    const result = await Promise.all(
+      users.map((user) =>
+        db
+          .query(userQuery, {
+            bind: { username: user.username },
+            type: QueryTypes.SELECT,
+          })
+          .then(([dbUser]) => {
+            return dbUser ? { ...user, ...dbUser } : user
+          })
+      )
+    )
+
+    return result
+  },
   castVote: async ({ voter, candidate, score }) => {
     const transaction = await db.queryInterface.sequelize.transaction()
     try {

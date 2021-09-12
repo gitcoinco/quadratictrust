@@ -29,7 +29,9 @@ router.get('/:username', async (req, res, next) => {
       if (uniqueUsers.length === 0) break
 
       const filtered = await User.filterOptout(uniqueUsers)
-      users.push(...filtered)
+
+      const userWithVoteInfo = await User.addVoteInfo(filtered)
+      users.push(...userWithVoteInfo)
     }
 
     res.send({ users })
